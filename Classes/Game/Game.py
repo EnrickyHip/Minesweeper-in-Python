@@ -1,12 +1,14 @@
 import pygame
 
+from Classes.Objects.Table import Table
+
 class Game:
   def __init__(self):
       pygame.init()
 
       self.screen = pygame.display.set_mode((800, 600))
-      self.background = pygame.image.load('images/background.png')
       self.icon = pygame.image.load('images/icon.png')
+      self.Table = Table(self.screen)
 
       pygame.display.set_caption("Minesweeper in Python")
       pygame.display.set_icon(self.icon)
