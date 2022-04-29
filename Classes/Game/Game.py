@@ -1,19 +1,20 @@
+#main Game class
 import pygame
 
 from Classes.Objects.Table import Table
 
 class Game:
   def __init__(self):
-      pygame.init()
+    pygame.init()
 
-      self.screen = pygame.display.set_mode((800, 600))
-      self.icon = pygame.image.load('images/icon.png')
-      self.Table = Table(self.screen)
+    self.screen = pygame.display.set_mode((800, 600))
+    self.icon = pygame.image.load('images/icon.png')
+    self.Table = Table(self.screen)
 
-      pygame.display.set_caption("Minesweeper in Python")
-      pygame.display.set_icon(self.icon)
+    pygame.display.set_caption("Minesweeper in Python")
+    pygame.display.set_icon(self.icon)
 
-      self.loop()
+    self.loop()
   
   def loop(self):
     clock = pygame.time.Clock()
