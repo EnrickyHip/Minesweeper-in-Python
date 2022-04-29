@@ -9,7 +9,7 @@ class Game:
 
     self.screen = pygame.display.set_mode((800, 600))
     self.icon = pygame.image.load('images/icon.png')
-    self.Table = Table(self.screen)
+    self.table = Table(self.screen)
 
     pygame.display.set_caption("Minesweeper in Python")
     pygame.display.set_icon(self.icon)

@@ -1,21 +1,27 @@
 import pygame
 import random
 
+from Classes.Game.Text import Text
 from Classes.Game.Background import Background
 from Classes.Objects.Square import Square
 from Classes.Other.createMultiArray import MultiArray #MultiArray is a own modulek
 
 class Table:
   def __init__(self, screen):
-      self.bombsNumber = 60
       self.screen = screen
-      self.squares = MultiArray.createMultiArray(24, 15) #creates a multidimensional array
       self.background = Background(pygame.image.load('images/background.png'), screen)
 
-      self.drawTable()
+      self.bombsNumber = 60
+      self.flagsAvailable = self.bombsNumber
+      self.squares = MultiArray.createMultiArray(24, 15) #creates a multidimensional array
 
-  def drawTable(self):
+      self.score = Text(self.screen, str(self.flagsAvailable), 'Arial', 34, (230, 0, 0), (398, 47))
+
+      self.generateTable()
+
+  def generateTable(self):
     self.background.draw()
+    self.score.draw()
     self.generateSquares()
     self.generateBombs()
   

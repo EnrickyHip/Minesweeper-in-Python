@@ -9,6 +9,7 @@ class Square:
 
     self.opened = False 
     self.isBomb = False
+    self.isFlaged = False
     self.neighborBombs = 0
 
     self.draw()
