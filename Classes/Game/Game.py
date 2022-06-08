@@ -27,5 +27,10 @@ class Game:
         if event.type == pygame.QUIT:
             window = False
 
+        if event.type == pygame.MOUSEBUTTONDOWN:
+          mouse_position = pygame.mouse.get_pos()
+          self.table.actions(mouse_position)
+          
+
       pygame.display.update()
     pygame.quit()

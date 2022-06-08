@@ -1,77 +1,82 @@
 from Classes.Modules.Matrix import Matrix
 import pygame
 
-class Square:
+class Square(pygame.sprite.Sprite):
   def __init__(self, screen, table, x, y):
+    super().__init__()
     self.sreen = screen
     self.image = pygame.image.load('images/quadmi.png')
     self.table = table
+
     self.x = x #x and y here are the index in Table.squares[]
     self.y = y
 
-    self.isOpened = False 
-    self.isBomb = False
-    self.isFlaged = False
-    self.neighborsBombs = 0
+    self.rect = self.image.get_rect()
+    self.rect.x = self.x * 32 + 16
+    self.rect.y = self.y * 32 + 104
+    
+
+    self.is_opened = False 
+    self.is_bomb = False
+    self.is_flaged = False
+    self.neighbors_bombs = 0
     self.neighbors = []
 
-    self.draw()
+    #self.draw()
 
   def draw(self):
     #get (x,y) positions
-    x = self.x * 32 + 16
-    y = self.y * 32 + 104
 
-    self.sreen.blit(self.image, (x, y))
+    self.sreen.blit(self.image, (self.rect.x,  self.rect.y))
 
-  def getNeighborsBombs(self):
-    self.neighbors = Matrix.getNeighbors(self.x, self.y, self.table)
-    filteredNeighbors = filter(lambda neighbor: neighbor.isBomb, self.neighbors)
-    self.neighborsBombs = len(list(filteredNeighbors))
+  def get_neighbors_bombs(self):
+    self.neighbors = Matrix.get_neighbors(self.x, self.y, self.table)
+    filtered_neighbors = filter(lambda neighbor: neighbor.is_bomb, self.neighbors)
+    self.neighbors_bombs = len(list(filtered_neighbors))
 
   #properties 
 
   @property
-  def isOpened(self):
-    return self.__isOpened
+  def is_opened(self):
+    return self.__is_opened
   
   @property
-  def isBomb(self):
-    return self.__isBomb
+  def is_bomb(self):
+    return self.__is_bomb
   
   @property
-  def isFlaged(self):
-    return self.__isFlaged 
+  def is_flaged(self):
+    return self.__is_flaged 
 
   @property
   def neighbors(self):
     return self.__neighbors
     
   @property
-  def neighborsBombs(self):
-    return self.__neighborsBombs
+  def neighbors_bombs(self):
+    return self.neighbors_bombs
 
   #setters 
 
-  @isOpened.setter
-  def isOpened(self, value):
-    self.__isOpened = value
+  @is_opened.setter
+  def is_opened(self, value):
+    self.__is_opened = value
   
-  @isBomb.setter
-  def isBomb(self, value):
-    self.__isBomb = value
+  @is_bomb.setter
+  def is_bomb(self, value):
+    self.__is_bomb = value
   
-  @isFlaged.setter
-  def isFlaged(self, value):
-    self.__isFlaged = value
+  @is_flaged.setter
+  def is_flaged(self, value):
+    self.__is_flaged = value
 
   @neighbors.setter
   def neighbors(self, value):
     self.__neighbors = value
     
-  @neighborsBombs.setter
-  def neighborsBombs(self, value):
-    self.__neighborsBombs = value
+  @neighbors_bombs.setter
+  def neighbors_bombs(self, value):
+    self.__neighbors_bombs = value
 
 
 

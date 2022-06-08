@@ -7,13 +7,19 @@ class Matrix:
       ]
 
   @staticmethod
-  def defineElements(array, callback): #this method define all elements in a bidimensional array
+  def define_elements(array, callback): #this method define all elements in a bidimensional array
     for x in range(0, len(array)):
       for y in range(0, len(array[0])):
         array[x][y] = callback(x, y)  
 
   @staticmethod
-  def getNeighbors(x, y, matrix):
+  def map(array, callback):
+    for x in range(0, len(array)):
+      for y in range(0, len(array[0])):
+       callback(x, y)  
+
+  @staticmethod
+  def get_neighbors(x, y, matrix):
     width = len(matrix)
     height = len(matrix[0])
     neighbors = []
