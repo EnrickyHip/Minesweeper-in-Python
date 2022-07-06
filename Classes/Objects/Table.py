@@ -4,7 +4,7 @@ import random
 from Classes.Game.Text import Text
 from Classes.Game.Background import Background
 from Classes.Objects.Square import Square
-from Classes.Modules.Matrix import Matrix #MultiArray is a own module 
+from Classes.Modules.Matrix import Matrix #Matrix is an own module 
 from Classes.Modules.Point import Point
 
 class Table:
@@ -41,14 +41,8 @@ class Table:
   
   def generate_squares(self):
     #Matrix.define_elements is a static method which defines a certain values for all elements in a multidimensionalArray
-    Matrix.define_elements( 
-        self.squares,
-        lambda x, y: Square(self.screen, self.squares, x, y) #lambda is an annonymous function 
-      )
-    Matrix.map(
-      self.squares,
-      lambda x, y: self.squares_sprites.add(self.squares[x][y])
-    )        
+    Matrix.define_elements(self.squares, lambda x, y: Square(self.screen, self, x, y))
+    Matrix.map(self.squares, lambda x, y: self.squares_sprites.add(self.squares[x][y]))        
 
   def generate_bombs(self):
     i = 0
@@ -65,12 +59,28 @@ class Table:
       for y in range(0, len(self.squares[0])):
         self.squares[x][y].get_neighbors_bombs()
 
-  def actions(self, mouse_position):
-    point = Point(mouse_position[0], mouse_position[1])
+  def add_flag(self, square):
+    if (square.is_flaged):
+      self.flags_available += 1
+    else:
+      if (self.flags_available == 0): return
+      self.flags_available -= 1
+      
+    self.score.text = str(self.flags_available)
+    square.toggle_flag()
+
+  def actions(self, event):
+    point = Point(event.pos[0], (event.pos[1]))
     squares = pygame.sprite.spritecollide(point, self.squares_sprites, False)
-    for square in squares:
-      square.image = pygame.image.load('images/quadap.png')
-      self.draw()
+
+    if not(squares): return
+
+    if (event.button == 3):
+      for square in squares:
+        self.add_flag(square)
+        
+    self.draw()
+
 
     
         

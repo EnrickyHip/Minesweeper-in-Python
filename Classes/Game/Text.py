@@ -11,11 +11,3 @@ class Text:
   def draw(self):
     render = self.font.render(self.text, True, self.color)
     self.screen.blit(render, self.position)
-
-  @property
-  def text(self):
-    return self.__text
-
-  @text.setter
-  def text(self, value):
-    self.__text = value
