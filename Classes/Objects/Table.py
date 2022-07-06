@@ -59,7 +59,18 @@ class Table:
       for y in range(0, len(self.squares[0])):
         self.squares[x][y].get_neighbors_bombs()
 
+  def open_square(self, square):
+    if (square.is_flaged): return
+    if (square.is_bomb): return self.die()
+
+    if (square.is_opened):
+      if (len(square.get_neighbors_flags()) == square.neighbors_bombs > 0):
+        square.open_neighbors()
+    else:
+      square.open()
+
   def add_flag(self, square):
+    if (square.is_opened): return
     if (square.is_flaged):
       self.flags_available += 1
     else:
@@ -68,16 +79,23 @@ class Table:
       
     self.score.text = str(self.flags_available)
     square.toggle_flag()
+  
+  def die(self):
+    print("morreu")
 
-  def actions(self, event):
+  def actions(self, action, event):
     point = Point(event.pos[0], (event.pos[1]))
     squares = pygame.sprite.spritecollide(point, self.squares_sprites, False)
 
     if not(squares): return
 
-    if (event.button == 3):
+    if (action == "add-flag"):
       for square in squares:
         self.add_flag(square)
+    
+    if (action == "open-square"):
+      for square in squares:
+        self.open_square(square)
         
     self.draw()
 

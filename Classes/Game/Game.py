@@ -9,12 +9,15 @@ class Game:
 
     self.screen = pygame.display.set_mode((800, 600))
     self.icon = pygame.image.load('images/icon.png')
-    self.table = Table(self.screen)
+    self.init()
 
     pygame.display.set_caption("Minesweeper in Python")
     pygame.display.set_icon(self.icon)
 
     self.loop()
+
+  def init(self):
+    self.table = Table(self.screen)
   
   def loop(self):
     clock = pygame.time.Clock()
@@ -27,8 +30,16 @@ class Game:
         if event.type == pygame.QUIT:
             window = False
 
+        if event.type == pygame.KEYDOWN:
+          if event.key == pygame.K_SPACE:
+            self.init()
+
         if event.type == pygame.MOUSEBUTTONDOWN:
-          self.table.actions(event)
+          action = False
+          if (event.button == 3): action = "add-flag"
+          elif (event.button == 1): action = "open-square"
+
+          if (action): self.table.actions(action, event)
 
       pygame.display.update()
     pygame.quit()
