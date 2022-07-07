@@ -38,19 +38,22 @@ class Square(pygame.sprite.Sprite):
 
   def open(self):
     if self.is_flagged or self.is_opened:
-      return
+      return True
     if self.is_bomb:
-      return self.table.die(self)
+      self.table.die(self)
+      return False
 
     self.is_opened = True
     if self.neighbors_bombs == 0:
       self.open_neighbors()
 
     self.update()
+    return True
 
   def open_neighbors(self):
     for neighbor in self.neighbors:
-      neighbor.open()
+      if not neighbor.open():
+        break
 
   def get_neighbors_bombs(self):
     self.neighbors = Matrix.get_neighbors(self.x, self.y, self.table.squares)
