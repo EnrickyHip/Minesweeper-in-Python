@@ -12,6 +12,9 @@ class Table:
       self.screen = screen
       self.background = Background(pygame.image.load('images/background.png'), screen)
 
+      self.alive = True
+      self.won = False
+
       self.bombs_number = 60
       self.flags_available = self.bombs_number
       self.squares = Matrix.create(24, 15) #creates a multidimensional array
@@ -20,12 +23,6 @@ class Table:
       self.score = Text(self.screen, str(self.flags_available), 'Arial', 34, (230, 0, 0), (398, 47))
 
       self.generate_table()
-
-      # for line in self.squares:
-      #   print ('  '.join(map(str, [square.is_bomb for square in line])))
-      
-      # for line in self.squares:
-      #   print ('  '.join(map(str, [square.neighbors_bombs for square in line])))
 
   def generate_table(self):    
     self.generate_squares()
@@ -55,13 +52,13 @@ class Table:
         i += 1
   
   def get_neighbors(self):
-    for x in range(0, len(self.squares)):
-      for y in range(0, len(self.squares[0])):
-        self.squares[x][y].get_neighbors_bombs()
+    for line in self.squares:
+      for square in line:
+        square.get_neighbors_bombs()
 
   def open_square(self, square):
     if (square.is_flaged): return
-    if (square.is_bomb): return self.die()
+    if (square.is_bomb): return self.die(square)
 
     if (square.is_opened):
       if (len(square.get_neighbors_flags()) == square.neighbors_bombs > 0):
@@ -79,9 +76,32 @@ class Table:
       
     self.score.text = str(self.flags_available)
     square.toggle_flag()
+
+  def win(self):
+    for line in self.squares:
+      for square in line:
+        if not square.is_opened and not square.is_flaged: 
+          square.toggle_flag()
+
+    self.squares_sprites.draw(self.screen)
+    self.won = True
+    
+    win_text_left = Text(self.screen, "You Won!", 'Arial', 34, (255, 255, 255), (160, 55))
+    win_text_right = Text(self.screen, "You Won!", 'Arial', 34, (255, 255, 255), (535, 55))
+
+    win_text_left.draw()
+    win_text_right.draw()
   
-  def die(self):
-    print("morreu")
+  def die(self, square_exploded):
+    self.alive = False
+    
+    for line in self.squares:
+      for square in line:
+        if (square.is_bomb or square.is_flaged):
+          square.update()
+    
+    square_exploded.explode()
+        
 
   def actions(self, action, event):
     point = Point(event.pos[0], (event.pos[1]))
@@ -98,6 +118,17 @@ class Table:
         self.open_square(square)
         
     self.draw()
+    self.check_win()
+
+  def check_win(self):
+    closed_squares = 0 
+    for line in self.squares:
+      for square in line:
+        if not square.is_opened: closed_squares += 1
+
+    if closed_squares == self.bombs_number:
+      self.win()
+      
 
 
     

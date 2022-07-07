@@ -34,12 +34,13 @@ class Game:
           if event.key == pygame.K_SPACE:
             self.init()
 
-        if event.type == pygame.MOUSEBUTTONDOWN:
-          action = False
-          if (event.button == 3): action = "add-flag"
-          elif (event.button == 1): action = "open-square"
+        if self.table.alive and not self.table.won:
+          if event.type == pygame.MOUSEBUTTONDOWN:
+            action = False
+            if (event.button == 3): action = "add-flag"
+            elif (event.button == 1): action = "open-square"
 
-          if (action): self.table.actions(action, event)
+            if (action): self.table.actions(action, event)
 
       pygame.display.update()
     pygame.quit()

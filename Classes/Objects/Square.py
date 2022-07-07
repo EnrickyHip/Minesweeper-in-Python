@@ -21,6 +21,8 @@ class Square(pygame.sprite.Sprite):
     self.neighbors_bombs = 0
     self.neighbors = []
 
+    self.exploded = False
+
   number_images = [
     'images/square-opened.png',
     'images/square1.png',
@@ -35,13 +37,14 @@ class Square(pygame.sprite.Sprite):
 
   def open(self):
     if (self.is_flaged or self.is_opened): return
-    if (self.is_bomb): return #! somente no caso de clicar em números
+    if (self.is_bomb): 
+      return self.table.die(self)
 
     self.is_opened = True
     if (self.neighbors_bombs == 0):
       self.open_neighbors()
     
-    self.set_image()
+    self.update()
     
   def open_neighbors(self):
     for neighbor in self.neighbors:
@@ -61,17 +64,31 @@ class Square(pygame.sprite.Sprite):
 
     return neighbors_flags
 
-  def set_image(self):
-    if (self.is_opened):
-      self.image = pygame.image.load(Square.number_images[self.neighbors_bombs])
-    elif (self.is_flaged):
-      self.image = pygame.image.load('images/square-flag.png')
-    else:
-      self.image = pygame.image.load('images/square-closed.png')
-
   def toggle_flag(self):
     self.is_flaged = not self.is_flaged
-    self.set_image()
+    self.update()
+
+  #? it's probably not well done
+  def update(self):
+
+    if self.is_opened: self.image = pygame.image.load(Square.number_images[self.neighbors_bombs])
+
+    elif not self.table.alive:
+      if self.exploded: self.image = pygame.image.load('images/square-bomb-explode.png')
+
+      elif self.is_flaged:
+        if not self.is_bomb: self.image = pygame.image.load('images/square-wrong-flag.png')
+
+      elif self.is_bomb: self.image = pygame.image.load('images/square-bomb.png')
+
+    elif self.is_flaged: 
+      self.image = pygame.image.load('images/square-flag.png')
+    else: self.image = pygame.image.load('images/square-closed.png')
+  
+  def explode(self):
+    self.exploded = True
+    self.update()
+
 
 
 
