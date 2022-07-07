@@ -1,6 +1,7 @@
 from Classes.Modules.Matrix import Matrix
 import pygame
 
+
 class Square(pygame.sprite.Sprite):
   def __init__(self, screen, table, x, y):
     super().__init__()
@@ -8,16 +9,16 @@ class Square(pygame.sprite.Sprite):
     self.image = pygame.image.load('images/square-closed.png')
     self.table = table
 
-    self.x = x #x and y here are the index in Table.squares[]
+    self.x = x  # x and y here are the index in Table.squares[]
     self.y = y
 
     self.rect = self.image.get_rect()
     self.rect.x = self.x * 32 + 16
     self.rect.y = self.y * 32 + 104
 
-    self.is_opened = False 
+    self.is_opened = False
     self.is_bomb = False
-    self.is_flaged = False
+    self.is_flagged = False
     self.neighbors_bombs = 0
     self.neighbors = []
 
@@ -36,16 +37,17 @@ class Square(pygame.sprite.Sprite):
   ]
 
   def open(self):
-    if (self.is_flaged or self.is_opened): return
-    if (self.is_bomb): 
+    if self.is_flagged or self.is_opened:
+      return
+    if self.is_bomb:
       return self.table.die(self)
 
     self.is_opened = True
-    if (self.neighbors_bombs == 0):
+    if self.neighbors_bombs == 0:
       self.open_neighbors()
-    
+
     self.update()
-    
+
   def open_neighbors(self):
     for neighbor in self.neighbors:
       neighbor.open()
@@ -59,38 +61,37 @@ class Square(pygame.sprite.Sprite):
     neighbors_flags = []
 
     for neighbor in self.neighbors:
-      if neighbor.is_flaged:
+      if neighbor.is_flagged:
         neighbors_flags.append(neighbor)
 
     return neighbors_flags
 
   def toggle_flag(self):
-    self.is_flaged = not self.is_flaged
+    self.is_flagged = not self.is_flagged
     self.update()
 
-  #? it's probably not well done
+  # ? it's probably not well done
   def update(self):
 
-    if self.is_opened: self.image = pygame.image.load(Square.number_images[self.neighbors_bombs])
+    if self.is_opened:
+      self.image = pygame.image.load(Square.number_images[self.neighbors_bombs])
 
     elif not self.table.alive:
-      if self.exploded: self.image = pygame.image.load('images/square-bomb-explode.png')
+      if self.exploded:
+        self.image = pygame.image.load('images/square-bomb-explode.png')
 
-      elif self.is_flaged:
-        if not self.is_bomb: self.image = pygame.image.load('images/square-wrong-flag.png')
+      elif self.is_flagged:
+        if not self.is_bomb:
+          self.image = pygame.image.load('images/square-wrong-flag.png')
 
-      elif self.is_bomb: self.image = pygame.image.load('images/square-bomb.png')
+      elif self.is_bomb:
+        self.image = pygame.image.load('images/square-bomb.png')
 
-    elif self.is_flaged: 
+    elif self.is_flagged:
       self.image = pygame.image.load('images/square-flag.png')
-    else: self.image = pygame.image.load('images/square-closed.png')
-  
+    else:
+      self.image = pygame.image.load('images/square-closed.png')
+
   def explode(self):
     self.exploded = True
     self.update()
-
-
-
-
-
-  
