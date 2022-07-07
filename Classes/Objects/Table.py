@@ -88,8 +88,11 @@ class Table:
         if not square.is_opened and not square.is_flagged:
           square.toggle_flag()
 
-    self.squares_sprites.draw(self.screen)
+    self.flags_available = 0
+    self.score.text = str(self.flags_available)
+
     self.won = True
+    self.draw()
 
     win_text_left = Text(self.screen, "You Won!", 'Arial', 34, (255, 255, 255), (160, 55))
     win_text_right = Text(self.screen, "You Won!", 'Arial', 34, (255, 255, 255), (535, 55))
