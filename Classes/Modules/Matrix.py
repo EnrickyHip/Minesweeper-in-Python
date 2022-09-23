@@ -8,14 +8,14 @@ class Matrix:
 
   @staticmethod
   def define_elements(array, callback):  # this method define all elements in a matrix
-    for x in range(0, len(array)):
-      for y in range(0, len(array[0])):
+    for x in range(len(array)):
+      for y in range(len(array[0])):
         array[x][y] = callback(x, y)
 
   @staticmethod
   def map(array, callback):
-    for x in range(0, len(array)):
-      for y in range(0, len(array[0])):
+    for x in range(len(array)):
+      for y in range(len(array[0])):
         callback(x, y)
 
   @staticmethod
