@@ -3,7 +3,7 @@ import pygame
 
 
 class Square(pygame.sprite.Sprite):
-  def __init__(self, screen, table, x, y):
+  def __init__(self, screen: pygame.Surface, table, x: int, y: int):
     super().__init__()
     self.screen = screen
     self.image = pygame.image.load('images/square-closed.png')
@@ -20,8 +20,7 @@ class Square(pygame.sprite.Sprite):
     self.is_bomb = False
     self.is_flagged = False
     self.neighbors_bombs = 0
-    self.neighbors = []
-
+    self.neighbors: list[Square] = []
     self.exploded = False
 
   number_images = [

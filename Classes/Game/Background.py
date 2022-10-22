@@ -1,5 +1,8 @@
+from pygame import Surface
+
+
 class Background:
-  def __init__(self, background, screen):
+  def __init__(self, background: Surface, screen: Surface):
     self.background = background
     self.screen = screen
 

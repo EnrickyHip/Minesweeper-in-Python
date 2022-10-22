@@ -1,25 +1,29 @@
+from typing import TypeVar, Callable
+
+T = TypeVar('T')
+
 class Matrix:
 
   @staticmethod
-  def create(x, y):  # this method creates a matrix
+  def create(x: int, y: int):  # this method creates a matrix
     return [
       [None for i in range(y)] for i in range(x)
     ]
 
   @staticmethod
-  def define_elements(array, callback):  # this method define all elements in a matrix
+  def define_elements(array: list[list[T]], callback: Callable[[int, int], T]):  # this method define all elements in a matrix
     for x in range(len(array)):
       for y in range(len(array[0])):
         array[x][y] = callback(x, y)
 
   @staticmethod
-  def map(array, callback):
+  def for_each(array: list[list[T]], callback: Callable[[int, int], None]):
     for x in range(len(array)):
       for y in range(len(array[0])):
-        callback(x, y)
+        callback(array[x][y])
 
   @staticmethod
-  def get_neighbors(x, y, matrix):
+  def get_neighbors(x: int, y: int, matrix: list[list[T]]):
     width = len(matrix)
     height = len(matrix[0])
     neighbors = []

@@ -1,15 +1,15 @@
 import pygame
 import random
 
-from Classes.Game.Text import Text
 from Classes.Game.Background import Background
+from Classes.Game.Text import Text
 from Classes.Objects.Square import Square
 from Classes.Modules.Matrix import Matrix  # Matrix is an own module
 from Classes.Modules.Point import Point
 
 
 class Table:
-  def __init__(self, screen):
+  def __init__(self, screen: pygame.Surface):
     self.screen = screen
     self.background = Background(pygame.image.load('images/background.png'), screen)
 
@@ -40,7 +40,7 @@ class Table:
   def generate_squares(self):
     # Matrix.define_elements is a static method which defines a certain values for all elements in a matrix
     Matrix.define_elements(self.squares, lambda x, y: Square(self.screen, self, x, y))
-    Matrix.map(self.squares, lambda x, y: self.squares_sprites.add(self.squares[x][y]))
+    Matrix.for_each(self.squares, lambda square: self.squares_sprites.add(square))
 
   def generate_bombs(self):
     i = 0
@@ -53,9 +53,8 @@ class Table:
         i += 1
 
   def get_neighbors(self):
-    for line in self.squares:
-      for square in line:
-        square.get_neighbors_bombs()
+    Matrix.for_each(self.squares, lambda square: square.get_neighbors_bombs())
+        
 
   def open_square(self, square):
     if square.is_flagged:
