@@ -18,7 +18,7 @@ class Table:
 
     self.bombs_number = 60
     self.flags_available = self.bombs_number
-    self.squares = Matrix.create(24, 15)  # creates a multidimensional array
+    self.squares = Matrix.create(24, 15, lambda x, y: Square(self.screen, self, x, y))  # creates a multidimensional array
     self.squares_sprites = pygame.sprite.Group()
 
     self.score = Text(self.screen, str(self.flags_available), 'Arial', 34, (230, 0, 0), (398, 47))
@@ -39,7 +39,6 @@ class Table:
 
   def generate_squares(self):
     # Matrix.define_elements is a static method which defines a certain values for all elements in a matrix
-    Matrix.define_elements(self.squares, lambda x, y: Square(self.screen, self, x, y))
     Matrix.for_each(self.squares, lambda square: self.squares_sprites.add(square))
 
   def generate_bombs(self):

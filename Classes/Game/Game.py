@@ -10,15 +10,14 @@ class Game:
 
     self.screen = pygame.display.set_mode((800, 600))
     self.icon = pygame.image.load('images/icon.png')
-    self.table = None
-    self.init()
+    self.table = Table(self.screen)
 
     pygame.display.set_caption("Minesweeper in Python")
     pygame.display.set_icon(self.icon)
 
     self.loop()
 
-  def init(self):
+  def reset(self):
     self.table = Table(self.screen)
 
   def loop(self):
@@ -34,7 +33,7 @@ class Game:
 
         if event.type == pygame.KEYDOWN:
           if event.key == pygame.K_SPACE:
-            self.init()
+            self.reset()
 
         if self.table.alive and not self.table.won:
           if event.type == pygame.MOUSEBUTTONDOWN:
