@@ -6,14 +6,13 @@ class Matrix():
 
   @staticmethod
   def create(x: int, y: int, callback: Callable[[int, int], T]) -> list[list[T]]:  # this method creates a matrix
-    matrix = [
-      [callback(j, i) for i in range(y)] for j in range(x)
+    return [
+      [callback(j, i) for i in range(y)] 
+      for j in range(x)
     ]
 
-    return matrix
-
   @staticmethod
-  def for_each(array: list[list[T]], callback: Callable[[T], None]):
+  def for_each(array: list[list[T]], callback: Callable[[T], None]) -> None:
     for x in range(len(array)):
       for y in range(len(array[0])):
         callback(array[x][y])
